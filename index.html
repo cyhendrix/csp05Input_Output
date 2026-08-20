@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter 5 Practice Lab — Input & Output</title>
+  <style>
+    :root{--purple:#452669;--gold:#f2b526;--ink:#20242b;--bg:#f7f7fb;--card:#fff;--good:#eaf7e8;--soft:#fff7df;--blue:#eaf4ff}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    header{background:var(--purple);color:white;padding:28px 18px;text-align:center;border-bottom:8px solid var(--gold)}
+    header h1{margin:0;font-size:clamp(28px,4vw,46px)} header p{margin:8px 0 0;color:#ffe7a0;font-weight:700}
+    main{max-width:1050px;margin:28px auto;padding:0 16px 48px}.intro,.lab{background:var(--card);border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 4px 14px #00000012}
+    .intro{border-left:8px solid var(--gold)} .lab{border-top:7px solid var(--purple)}
+    .lab h2{margin:0 0 8px;color:var(--purple)} .goal{font-weight:700;color:#5a3b77}.code{background:#15171c;color:#f7f7f7;padding:16px;border-radius:12px;overflow:auto;font:16px/1.45 Consolas,monospace;white-space:pre}
+    .turn{background:var(--soft);border:2px solid var(--gold);padding:14px;border-radius:12px;margin-top:12px}.check{background:var(--blue);padding:10px 12px;border-radius:10px;margin:10px 0}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.run{background:var(--purple);color:white}.show{background:var(--gold);color:#1d1730}.reset{background:#e7e7eb;color:#222}.out{display:none;margin-top:12px;padding:12px;border-radius:10px;background:var(--good);border:1px solid #a9d7a4;font-family:Consolas,monospace;white-space:pre-wrap}.small{font-size:14px;color:#5d5d68}
+    footer{text-align:center;color:#666;padding:28px 12px}.pill{display:inline-block;background:var(--gold);color:#2d2140;border-radius:999px;padding:4px 10px;font-weight:700;margin:0 4px}
+  </style>
+</head>
+<body>
+<header><h1>Chapter 5 Practice Lab</h1><p>Input & Output • Python Practice Before the Chapter Exam</p></header>
+<main>
+  <section class="intro">
+    <h2>How to use this lab</h2>
+    <p>Work through all 10 parts in order. For each part: read the code, predict what will happen, run it in your online Python editor, then complete the <strong>Your Turn</strong> challenge.</p>
+    <p><span class="pill">print()</span><span class="pill">input()</span><span class="pill">int()</span><span class="pill">float()</span><span class="pill">str.format()</span></p>
+  </section>
+
+  <section class="lab"><h2>Part 1 — print() Parameters</h2><p class="goal">Goal: Practice multiple print() parameters.</p><div class="code">name = "Jordan"
+score = 98
+print("Player:", name)
+print("Score:", score)</div><div class="check">Predict: Why is there a space between the label and the value?</div><div class="turn"><strong>Your Turn:</strong> Change the name and score. Then explain why print() places a space between separate parameters.</div><div class="controls"><button class="show" onclick="toggle('o1')">Show Expected Output</button></div><div id="o1" class="out">Player: Jordan
+Score: 98</div></section>
+
+  <section class="lab"><h2>Part 2 — sep and end</h2><p class="goal">Goal: Control separators and line endings.</p><div class="code">print("A","B","C",sep="-")
+print("Ready",end=" ")
+print("Set",end=" ")
+print("Go!")</div><div class="turn"><strong>Your Turn:</strong> Change <code>sep</code> to <code>#</code>. Then make <code>3 2 1 GO!</code> appear on one line using separate print() statements.</div><div class="controls"><button class="show" onclick="toggle('o2')">Show Expected Output</button></div><div id="o2" class="out">A-B-C
+Ready Set Go!</div></section>
+
+  <section class="lab"><h2>Part 3 — User Input</h2><p class="goal">Goal: Collect and use text input.</p><div class="code">name = input("Enter your name: ")
+color = input("Enter your favorite color: ")
+print(name, "likes", color)</div><div class="turn"><strong>Your Turn:</strong> Add one more input question and include that answer in the final output.</div><p class="small">Remember: <code>input()</code> returns a string.</p></section>
+
+  <section class="lab"><h2>Part 4 — Numeric Input</h2><p class="goal">Goal: Convert input before doing math.</p><div class="code">ageText = input("Enter your age: ")
+age = int(ageText)
+print("Next year you will be", age + 1)</div><div class="turn"><strong>Your Turn:</strong> Ask for a decimal height and convert it with <code>float()</code>.</div><div class="check">Think: What happens if the user types <code>orange</code> and the code tries <code>int("orange")</code>?</div></section>
+
+  <section class="lab"><h2>Part 5 — Basic str.format()</h2><p class="goal">Goal: Insert a value into a placeholder.</p><div class="code">name = input("Name: ")
+result = str.format("Hello, {}!", name)
+print(result)</div><div class="turn"><strong>Your Turn:</strong> Add a second placeholder for the user's favorite class.</div></section>
+
+  <section class="lab"><h2>Part 6 — Numbered Placeholders</h2><p class="goal">Goal: Use zero-based placeholder indexes.</p><div class="code">result = str.format("{1} {0}", "Hendrix", "Ms.")
+print(result)</div><div class="turn"><strong>Your Turn:</strong> Use three values and print them in reverse order with <code>{2} {1} {0}</code>.</div><div class="controls"><button class="show" onclick="toggle('o6')">Show Expected Output</button></div><div id="o6" class="out">Ms. Hendrix</div></section>
+
+  <section class="lab"><h2>Part 7 — Width and Alignment</h2><p class="goal">Goal: Practice left, center, and right alignment.</p><div class="code">print(str.format("|{0:^15}|", "Python"))
+print(str.format("|{0:<15}|", "Left"))
+print(str.format("|{0:>15}|", "Right"))</div><div class="turn"><strong>Your Turn:</strong> Change each field width from 15 to 20.</div></section>
+
+  <section class="lab"><h2>Part 8 — Truncation</h2><p class="goal">Goal: Limit a string to a maximum number of characters.</p><div class="code">artist = "Rumpelstiltskin"
+print(str.format("|{0:^20.10}|", artist))</div><div class="turn"><strong>Your Turn:</strong> Try a short name and a long name. Confirm that the long name is limited to 10 characters.</div><p class="small"><code>20</code> = field width • <code>.10</code> = maximum 10 characters • <code>^</code> = center</p></section>
+
+  <section class="lab"><h2>Part 9 — Number Formatting</h2><p class="goal">Goal: Format large numbers with commas.</p><div class="code">price = 1500
+print(str.format("Price: ${0:6,}", price))</div><div class="turn"><strong>Your Turn:</strong> Change <code>price</code> to <code>2500000</code> and observe the comma separators.</div><div class="controls"><button class="show" onclick="toggle('o9')">Show Expected Output</button></div><div id="o9" class="out">Price: $ 1,500</div></section>
+
+  <section class="lab"><h2>Part 10 — Mini Character Art Challenge</h2><p class="goal">Goal: Combine input(), print(), and str.format().</p><div class="code">artist = input("Artist name: ")
+print("+--------------------+")
+print("|       /\\           |")
+print("|      /  \\          |")
+signature = str.format("|{0:^20.10}|", artist)
+print(signature)
+print("+--------------------+")</div><div class="turn"><strong>Your Turn:</strong> Replace the picture with your own 3–5 line character art. Keep the centered, 10-character signature.</div><div class="check">Test twice: once with a name shorter than 10 characters, and once with a name longer than 10 characters.</div></section>
+</main>
+<footer>Chapter 05 • Input and Output • Practice Lab</footer>
+<script>function toggle(id){const e=document.getElementById(id);e.style.display=(e.style.display==='block'?'none':'block')}</script>
+</body></html>
