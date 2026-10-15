@@ -241,7 +241,6 @@ function graded(){
 }
 function refreshResults(){
  const state=graded();
- results.hidden=false;
  summary.textContent='Score: '+state.score+' / 100 ('+state.correct+' correct question answers; 2 coding activities completed).';
  document.getElementById('chapter5ChecksCount').textContent=(['1','2','3','5','6','7','8','9a','9b'].filter(id=>localStorage.getItem('csp05-locked-'+id)).length+Number(localStorage.getItem('csp05lab4')==='1')+Number(localStorage.getItem('csp05lab10')==='1'))+' / 11';
  document.getElementById('chapter5ScorePercent').textContent=state.score+'%';
