@@ -86,10 +86,21 @@ const lessons=[
  {name:'Lesson Three: String Formatting',start:5,end:10}
 ];
 const intro=document.querySelector('#labContent > section.intro');
+const lessonIntroductions=[
+ ['Lesson 1: Printing with Parameters','Practice displaying information with print(), changing separators with sep, and controlling line endings with end.'],
+ ['Lesson 2: Getting Input from a User','Practice collecting user input with input() and converting text into numbers with int() and float().'],
+ ['Lesson 3: String Formatting','Practice inserting values into formatted strings, working with numbered placeholders, and aligning text.']
+];
+const instructionText='Instructions: Run the Python code and complete each activity. Questions allow a maximum of 2 checks. Correct answers lock immediately; after a second incorrect check, the answer locks and you can continue.';
+intro.style.borderLeft='0';
 const tabs=document.createElement('nav');
 tabs.className='lesson-tabs';
 tabs.setAttribute('aria-label','Chapter 5 lesson tabs');
 intro.insertAdjacentElement('beforebegin',tabs);
+const progress=document.getElementById('labProgress');
+tabs.insertAdjacentElement('afterend',progress);
+progress.hidden=false;
+progress.style.cssText='position:static;text-align:left;background:#eadcf5;color:#48216e;border:0;border-radius:9px;margin-bottom:16px;padding:10px 12px';
 const nav=document.createElement('div');
 nav.className='practice-navigation';
 const previous=document.createElement('button');
@@ -117,6 +128,8 @@ function show(i){
  const lesson=lessons[i];
  sections.forEach(function(section,n){section.hidden=!lesson||n<lesson.start||n>=lesson.end});
  resultPanel.hidden=!!lesson;
+ intro.hidden=!lesson;
+ if(lesson){intro.innerHTML='<h2>'+lessonIntroductions[i][0]+'</h2><p>'+lessonIntroductions[i][1]+'</p><p style="font-size:14px;color:#574b65"><b>Instructions:</b> '+instructionText.replace(/^Instructions: /,'')+'</p>';}
  resultTab.classList.toggle('active',!lesson);
  resultTab.setAttribute('aria-current',!lesson?'page':'false');
  buttons.forEach(function(button,n){
