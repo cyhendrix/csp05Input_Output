@@ -58,9 +58,13 @@ output.insertAdjacentElement('afterend',q);
 q.hidden=true;
 run.addEventListener('click',function(){
 const box=output;
-setTimeout(function(){
-if(!box.classList.contains('error')&&!/Running|still loading|appear here/i.test(box.textContent))q.hidden=false;
-},1200);
+let checks=0;
+const wait=setInterval(function(){
+checks++;
+const value=box.textContent.trim();
+if(box.classList.contains('error')||/still loading/i.test(value)||checks>200){clearInterval(wait);return;}
+if(value&&!/Running|appear here/i.test(value)){q.hidden=false;clearInterval(wait);}
+},150);
 });
 const reset=controls.querySelector('.reset');
 if(reset)reset.addEventListener('click',function(){q.hidden=true});
