@@ -72,8 +72,8 @@ async function runCode(n){
  if(f){f.textContent=problem||'✓ Code ran. Checking whether it follows the directions...';f.className='feedback '+(problem?'wrong':'correct')}
  codingPassed[n]=ok&&!problem&&codeMeetsDirections(n);
  if(ok&&!problem&&!codingPassed[n]){f.textContent='The code runs, but it does not meet all Your Turn directions. Check the required inputs, variables, and printed output.';f.className='feedback wrong';}
- if(codingPassed[n]&&n===10){completeLab(n);showRunComplete(n)}
-}async function runCode9b(){const ok=await execute(document.getElementById('c9b').value,document.getElementById('o9b'));if(ok)codingPassed['9b']=document.getElementById('c9b').value!==originals['9b']&&/\{0:,\}/.test(document.getElementById('c9b').value)}function resetCode(n){codingPassed[n]=false;document.getElementById('c'+n).value=originals[n];document.getElementById('o'+n).textContent=n===9?'9A output will appear here.':'Output will appear here.';let a=document.getElementById('a'+n);if(a)a.value='';document.querySelectorAll('input[name="q'+n+'"]').forEach(r=>r.checked=false);if(n===9){document.querySelectorAll('input[name="q9a"]').forEach(r=>r.checked=false);part9.a=false;document.getElementById('f9a').textContent='';document.getElementById('f9').textContent='';localStorage.removeItem('csp05lab9');updateProgress()}let f=document.getElementById('f'+n);if(f&&n!==9){f.textContent='';f.className='feedback'}}function reset9b(){document.getElementById('c9b').value=original9b;document.getElementById('o9b').textContent='9B output will appear here.';document.querySelectorAll('input[name="q9b"]').forEach(r=>r.checked=false);part9.b=false;document.getElementById('f9b').textContent='';document.getElementById('f9').textContent='';localStorage.removeItem('csp05lab9');updateProgress()}function showFeedback(n,ok){if(!codingPassed[n]||codePassed[n]!==document.getElementById('c'+n).value){const f=document.getElementById('f'+n);f.textContent='First run code that follows the Your Turn directions, then check your answer.';f.className='feedback wrong';return;}let f=document.getElementById('f'+n);f.textContent=ok?'✓ Correct! Practice '+n+' is complete.':'Not quite — change your answer and try again.';f.className='feedback '+(ok?'correct':'wrong');if(ok)completeLab(n)}function showRunComplete(n){let f=document.getElementById('f'+n);f.textContent='✓ Code ran successfully. Practice '+n+' is complete.';f.className='feedback correct'}function checkExact(n,e){let a=(document.getElementById('a'+n)?.value||'').trim().toLowerCase();showFeedback(n,a===e.toLowerCase())}function checkText(n,arr){let a=(document.getElementById('a'+n)?.value||'').trim().toLowerCase();showFeedback(n,arr.some(x=>a.includes(x)))}function checkChoice(n,name,e){let s=document.querySelector('input[name="'+name+'"]:checked');showFeedback(n,!!s&&s.value===e)}function checkPart9(part,name,e){if(!(part==='a'?codingPassed[9]:codingPassed['9b'])){const f=document.getElementById('f9'+part);f.textContent='Complete and run the coding steps before checking the answer.';f.className='feedback wrong';return;}let s=document.querySelector('input[name="'+name+'"]:checked');let ok=!!s&&s.value===e;let f=document.getElementById('f9'+part);f.textContent=ok?'✓ Correct! Part 9'+part.toUpperCase()+' is complete.':'Not quite — change your answer and try again.';f.className='feedback '+(ok?'correct':'wrong');if(ok)part9[part]=true;if(part9.a&&part9.b){completeLab(9);let all=document.getElementById('f9');all.textContent='✓ Great job! Both 9A and 9B are correct. Practice 9 is complete.';all.className='feedback correct'}}function completeLab(n){localStorage.setItem('csp05lab'+n,'1');updateProgress()}function updateProgress(){let c=0;for(let i=1;i<=10;i++)if(localStorage.getItem('csp05lab'+i)==='1')c++;document.getElementById('progressText').textContent=c+' of 10 practices completed';document.getElementById('progressBar').style.width=(c*10)+'%'}updateProgress();</script><script>
+ if(codingPassed[n]){localStorage.setItem('csp05-code-verified-'+n,'1');if(n===10){completeLab(n);showRunComplete(n)}else if(n===4||n===5){const q=document.querySelector('#c'+n).closest('section.lab').querySelector('.question');if(q)q.hidden=false;}}else{localStorage.removeItem('csp05-code-verified-'+n);}
+}async function runCode9b(){const ok=await execute(document.getElementById('c9b').value,document.getElementById('o9b'));if(ok){codingPassed['9b']=document.getElementById('c9b').value!==originals['9b']&&/\{0:,\}/.test(document.getElementById('c9b').value);if(codingPassed['9b'])localStorage.setItem('csp05-code-verified-9b','1')}}function resetCode(n){codingPassed[n]=false;document.getElementById('c'+n).value=originals[n];document.getElementById('o'+n).textContent=n===9?'9A output will appear here.':'Output will appear here.';let a=document.getElementById('a'+n);if(a)a.value='';document.querySelectorAll('input[name="q'+n+'"]').forEach(r=>r.checked=false);if(n===9){document.querySelectorAll('input[name="q9a"]').forEach(r=>r.checked=false);part9.a=false;document.getElementById('f9a').textContent='';document.getElementById('f9').textContent='';localStorage.removeItem('csp05lab9');updateProgress()}let f=document.getElementById('f'+n);if(f&&n!==9){f.textContent='';f.className='feedback'}}function reset9b(){document.getElementById('c9b').value=original9b;document.getElementById('o9b').textContent='9B output will appear here.';document.querySelectorAll('input[name="q9b"]').forEach(r=>r.checked=false);part9.b=false;document.getElementById('f9b').textContent='';document.getElementById('f9').textContent='';localStorage.removeItem('csp05lab9');updateProgress()}function showFeedback(n,ok){if(!codingPassed[n]||codePassed[n]!==document.getElementById('c'+n).value){const f=document.getElementById('f'+n);f.textContent='First run code that follows the Your Turn directions, then check your answer.';f.className='feedback wrong';return;}let f=document.getElementById('f'+n);f.textContent=ok?'✓ Correct! Practice '+n+' is complete.':'Not quite — change your answer and try again.';f.className='feedback '+(ok?'correct':'wrong');if(ok)completeLab(n)}function showRunComplete(n){let f=document.getElementById('f'+n);f.textContent='✓ Code ran successfully. Practice '+n+' is complete.';f.className='feedback correct'}function checkExact(n,e){let a=(document.getElementById('a'+n)?.value||'').trim().toLowerCase();showFeedback(n,a===e.toLowerCase())}function checkText(n,arr){let a=(document.getElementById('a'+n)?.value||'').trim().toLowerCase();showFeedback(n,arr.some(x=>a.includes(x)))}function checkChoice(n,name,e){let s=document.querySelector('input[name="'+name+'"]:checked');showFeedback(n,!!s&&s.value===e)}function checkPart9(part,name,e){if(!(part==='a'?codingPassed[9]:codingPassed['9b'])){const f=document.getElementById('f9'+part);f.textContent='Complete and run the coding steps before checking the answer.';f.className='feedback wrong';return;}let s=document.querySelector('input[name="'+name+'"]:checked');let ok=!!s&&s.value===e;let f=document.getElementById('f9'+part);f.textContent=ok?'✓ Correct! Part 9'+part.toUpperCase()+' is complete.':'Not quite — change your answer and try again.';f.className='feedback '+(ok?'correct':'wrong');if(ok)part9[part]=true;if(part9.a&&part9.b){completeLab(9);let all=document.getElementById('f9');all.textContent='✓ Great job! Both 9A and 9B are correct. Practice 9 is complete.';all.className='feedback correct'}}function completeLab(n){localStorage.setItem('csp05lab'+n,'1');updateProgress()}function updateProgress(){let c=0;for(let i=1;i<=10;i++)if(localStorage.getItem('csp05lab'+i)==='1')c++;document.getElementById('progressText').textContent=c+' of 10 practices completed';document.getElementById('progressBar').style.width=(c*10)+'%'}updateProgress();</script><script>
 (function(){
 const infoKey='csp05-student-info';
 const first=document.getElementById('studentFirst'),last=document.getElementById('studentLast'),period=document.getElementById('studentPeriod');
@@ -154,6 +154,8 @@ nav.append(previous,next);
 sections[sections.length-1].insertAdjacentElement('afterend',nav);
 const resultPanel=document.getElementById('chapter5Results');
 resultPanel.hidden=true;
+function lessonComplete(i){return Array.from({length:lessons[i].end-lessons[i].start},(_,j)=>lessons[i].start+j+1).every(n=>localStorage.getItem('csp05lab'+n)==='1')}
+function mayOpen(i){return i===0||lessons.slice(0,Math.min(i,lessons.length)).every((_,j)=>lessonComplete(j))}
 const resultTab=document.createElement('button');resultTab.type='button';resultTab.className='lesson-tab';resultTab.textContent='Results';const key='csp05-current-lesson';
 let current=0;
 try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&saved>=0&&saved<=lessons.length)current=saved}catch(e){}
@@ -167,6 +169,7 @@ const buttons=lessons.map(function(lesson,i){
 tabs.appendChild(resultTab);
 resultTab.addEventListener('click',function(){show(lessons.length)});
 function show(i){
+ if(!mayOpen(i)){alert('Complete every coding activity and question correctly in the current lesson before moving forward.');return;}
  current=i;localStorage.setItem(key,String(i));
  const lesson=lessons[i];
  sections.forEach(function(section,n){section.hidden=!lesson||n<lesson.start||n>=lesson.end});
@@ -196,7 +199,7 @@ lessons.forEach(function(lesson,i){
   let attempts={};try{attempts=JSON.parse(localStorage.getItem(attemptKey)||'{}')}catch(e){}
   let answers={};try{answers=JSON.parse(localStorage.getItem('csp05-answers')||'{}')}catch(e){}
   for(let n=lesson.start+1;n<=lesson.end;n++){
-   localStorage.removeItem('csp05lab'+n);
+   localStorage.removeItem('csp05lab'+n);localStorage.removeItem('csp05-code-verified-'+n);
    for(const id of (n===9?['9a','9b']: [String(n)])){delete attempts[id];localStorage.removeItem('csp05-locked-'+id)}
    for(const id of ['c'+n,'a'+n,'c9b']){if(id==='c9b'&&n!==9)continue;delete answers[id]}
    const section=sections[n-1];section.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='radio'||el.type==='checkbox')el.checked=false;else if(el.tagName==='TEXTAREA')el.value=el.defaultValue;else el.value='';el.disabled=false});
@@ -214,6 +217,7 @@ lessons.forEach(function(lesson,i){
  const oldShow=show;
  lesson.clearFooter=footer;
 });
+[4,5].forEach(n=>{const q=document.getElementById('c'+n).closest('section.lab').querySelector('.question');if(q)q.hidden=localStorage.getItem('csp05-code-verified-'+n)!=='1'});
 const originalShow=show;
 show=function(i){originalShow(i);lessons.forEach((l,j)=>{l.clearFooter.hidden=i!==j})};
 show(current);
@@ -234,10 +238,10 @@ return {question,section};
 }
 function apply(id,correct){
 const count=attempts[id]||0;
-if(locks[id]||count>=maxTries)return false;
+if(locks[id])return false;
 attempts[id]=count+1;
-const finished=correct||attempts[id]>=maxTries;
-if(finished){locks[id]=true;localStorage.setItem('csp05-locked-'+id,correct?'correct':'incorrect');}
+const finished=correct;
+if(correct){locks[id]=true;localStorage.setItem('csp05-locked-'+id,'correct');}
 localStorage.setItem(key,JSON.stringify(attempts));
 const parts=fieldIds(id);
 const question=parts.question;
@@ -249,18 +253,19 @@ if(check)check.disabled=finished;
 }
 const f=document.getElementById('f'+id);
 if(f){
-f.textContent=correct?'✓ Correct! Answer locked.':finished?'✗ Incorrect. Both attempts used. Answer locked; continue to the next activity.':'✗ Incorrect. You have one more try.';
+f.textContent=correct?'✓ Correct! Answer locked.':'✗ Not correct yet. Review the question and try again.';
 f.className='feedback '+(correct?'correct':'wrong');
 }
-if(finished&&id!=='9a'&&id!=='9b')completeLab(Number(id));
+if(correct&&id!=='9a'&&id!=='9b'&&localStorage.getItem('csp05-code-verified-'+id)==='1')completeLab(Number(id));
 if(finished&&(id==='9a'||id==='9b')){
 part9[id.slice(-1)]=true;
-if(part9.a&&part9.b)completeLab(9);
+if(part9.a&&part9.b&&localStorage.getItem('csp05-code-verified-9')==='1'&&localStorage.getItem('csp05-code-verified-9b')==='1')completeLab(9);
 }
 return true;
 }
-showFeedback=function(n,ok){apply(String(n),ok)};
+showFeedback=function(n,ok){if(!codingPassed[n]){const f=document.getElementById('f'+n);f.textContent='Complete the coding directions correctly before answering.';f.className='feedback wrong';return;}apply(String(n),ok)};
 checkPart9=function(part,name,expected){
+if(!codingPassed[part==='a'?9:'9b']){document.getElementById('f9'+part).textContent='Complete the coding directions first.';return;}
 const selected=document.querySelector('input[name="'+name+'"]:checked');
 apply('9'+part,!!selected&&selected.value===expected);
 };
@@ -269,7 +274,7 @@ resetCode=function(n){previousReset(n);const id=String(n);if(locks[id]){const q=
 const previousReset9b=reset9b;
 reset9b=function(){previousReset9b()};
 Object.keys(attempts).forEach(id=>{
-if(attempts[id]>=maxTries||localStorage.getItem('csp05-locked-'+id)){
+if(localStorage.getItem('csp05-locked-'+id)==='correct'){
 locks[id]=true;
 const {question}=fieldIds(id);
 if(question)question.querySelectorAll('input,button.check').forEach(el=>el.disabled=true);
@@ -288,11 +293,11 @@ const keys=Array.from({length:10},(_,i)=>'csp05lab'+(i+1));
 function graded(){
  const done=keys.filter(k=>localStorage.getItem(k)==='1').length;
  const answered=JSON.parse(localStorage.getItem('csp05-question-attempts')||'{}');
- const questionIds=['1','2','3','5','6','7','8','9a','9b'];
- const all=questionIds.every(id=>localStorage.getItem('csp05-locked-'+id)||Number(answered[id])>=2);
- const codeDone=localStorage.getItem('csp05lab4')==='1'&&localStorage.getItem('csp05lab10')==='1';
+ const questionIds=['1','2','3','4','5','6','7','8','9a','9b'];
+ const all=questionIds.every(id=>localStorage.getItem('csp05-locked-'+id)||false);
+ const codeDone=localStorage.getItem('csp05lab10')==='1';
  const correct=questionIds.filter(id=>localStorage.getItem('csp05-locked-'+id)==='correct').length;
- const score=Math.round((correct+Number(localStorage.getItem('csp05lab4')==='1')+Number(localStorage.getItem('csp05lab10')==='1'))/11*100);
+ const score=Math.round((correct+Number(localStorage.getItem('csp05lab10')==='1'))/11*100);
  return {done,all:all&&codeDone,score,correct};
 }
 function refreshResults(){
@@ -345,7 +350,7 @@ submit.addEventListener('click',function(){
 reset.addEventListener('click',function(){
  if(!confirm('Start over? This clears saved practice answers on this device. Make sure your grade is in the tracker first.'))return;
  keys.forEach(k=>localStorage.removeItem(k));
- ['csp05-answers','csp05-question-attempts','csp05-current-lesson','csp05-student-info','csp05-grade-submitted'].forEach(k=>localStorage.removeItem(k));
+ ['csp05-answers','csp05-question-attempts','csp05-current-lesson','csp05-student-info','csp05-grade-submitted',...Array.from({length:10},(_,i)=>'csp05-code-verified-'+(i+1)),'csp05-code-verified-9b'].forEach(k=>localStorage.removeItem(k));
  for(let n=1;n<=10;n++)localStorage.removeItem('csp05-locked-'+n);
  ['9a','9b'].forEach(n=>localStorage.removeItem('csp05-locked-'+n));
  sessionStorage.removeItem('csp05-lab-started');
