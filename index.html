@@ -100,8 +100,7 @@ nav.append(previous,next);
 sections[sections.length-1].insertAdjacentElement('afterend',nav);
 const resultPanel=document.getElementById('chapter5Results');
 resultPanel.hidden=true;
-const resultTab=document.createElement('button');resultTab.type='button';resultTab.className='lesson-tab';resultTab.textContent='Results';tabs.appendChild(resultTab);
-const key='csp05-current-lesson';
+const resultTab=document.createElement('button');resultTab.type='button';resultTab.className='lesson-tab';resultTab.textContent='Results';const key='csp05-current-lesson';
 let current=0;
 try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&saved>=0&&saved<=lessons.length)current=saved}catch(e){}
 const buttons=lessons.map(function(lesson,i){
@@ -111,6 +110,7 @@ const buttons=lessons.map(function(lesson,i){
  button.addEventListener('click',function(){show(i)});
  tabs.appendChild(button);return button;
 });
+tabs.appendChild(resultTab);
 resultTab.addEventListener('click',function(){show(lessons.length)});
 function show(i){
  current=i;localStorage.setItem(key,String(i));
