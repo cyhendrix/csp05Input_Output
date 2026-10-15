@@ -359,4 +359,39 @@ reset.addEventListener('click',function(){
 });
 refreshResults();
 })();
+</script><script>
+(function(){
+  // Shuffle answer choices once per fresh attempt; preserve the order during retries.
+  const key='csp05-choice-order';
+  let orders={};
+  try{orders=JSON.parse(sessionStorage.getItem(key)||'{}')}catch(e){}
+  document.querySelectorAll('#labContent .question').forEach((question,index)=>{
+    const choices=Array.from(question.querySelectorAll(':scope > label.choice'));
+    if(choices.length<2)return;
+    const id=question.querySelector('input[type="radio"]')?.name||'question-'+index;
+    const values=choices.map(label=>label.querySelector('input')?.value);
+    let order=orders[id];
+    if(!Array.isArray(order)||order.length!==choices.length||new Set(order).size!==choices.length){
+      order=choices.map((_,i)=>i);
+      for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+      orders[id]=order;
+    }
+    const original=choices.map(label=>label.cloneNode(true));
+    const selected=question.querySelector('input[type="radio"]:checked')?.value;
+    choices.forEach(label=>label.remove());
+    const anchor=question.querySelector('.answer-actions');
+    order.forEach((originalIndex,displayIndex)=>{
+      const label=original[originalIndex];
+      const input=label.querySelector('input');
+      if(input){input.checked=input.value===selected;}
+      const letter=String.fromCharCode(65+displayIndex);
+      // Remove the original fixed A/B/C/D prefix, then label the shuffled order.
+      for(const node of Array.from(label.childNodes)){
+        if(node.nodeType===3){node.textContent=node.textContent.replace(/^\s*[A-D]\.\s*/, ' '+letter+'. ');break;}
+      }
+      question.insertBefore(label,anchor||null);
+    });
+  });
+  sessionStorage.setItem(key,JSON.stringify(orders));
+})();
 </script></body></html>
