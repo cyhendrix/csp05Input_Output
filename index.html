@@ -211,7 +211,7 @@ lessons.forEach(function(lesson,i){
   location.reload();
  };
  footer.appendChild(clear);
- if(i===lessons.length-1){const finish=document.createElement('button');finish.type='button';finish.className='begin-button';finish.textContent='Next Lesson →';finish.style.marginLeft='12px';finish.onclick=function(){show(lessons.length)};footer.appendChild(finish)}
+
  sections[lesson.end-1].insertAdjacentElement('afterend',footer);
  // Keep the clear control visible only with its lesson.
  const oldShow=show;
