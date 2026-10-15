@@ -98,9 +98,11 @@ const next=document.createElement('button');
 next.type='button';next.textContent='Next Lesson →';
 nav.append(previous,next);
 sections[sections.length-1].insertAdjacentElement('afterend',nav);
+const resultPanel=document.getElementById('chapter5Results');
+const resultTab=document.createElement('button');resultTab.type='button';resultTab.className='lesson-tab';resultTab.textContent='Results';tabs.appendChild(resultTab);
 const key='csp05-current-lesson';
 let current=0;
-try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&saved>=0&&saved<lessons.length)current=saved}catch(e){}
+try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&saved>=0&&saved<=lessons.length)current=saved}catch(e){}
 const buttons=lessons.map(function(lesson,i){
  const button=document.createElement('button');
  button.type='button';button.className='lesson-tab';
@@ -108,19 +110,52 @@ const buttons=lessons.map(function(lesson,i){
  button.addEventListener('click',function(){show(i)});
  tabs.appendChild(button);return button;
 });
+resultTab.addEventListener('click',function(){show(lessons.length)});
 function show(i){
  current=i;localStorage.setItem(key,String(i));
  const lesson=lessons[i];
- sections.forEach(function(section,n){section.hidden=n<lesson.start||n>=lesson.end});
+ sections.forEach(function(section,n){section.hidden=!lesson||n<lesson.start||n>=lesson.end});
+ resultPanel.hidden=!!lesson;
+ resultTab.classList.toggle('active',!lesson);
+ resultTab.setAttribute('aria-current',!lesson?'page':'false');
  buttons.forEach(function(button,n){
  button.classList.toggle('active',n===i);
  button.setAttribute('aria-current',n===i?'page':'false');
  });
- previous.disabled=i===0;next.disabled=i===lessons.length-1;
+ previous.disabled=i===0;next.disabled=i===lessons.length;
+ next.textContent=i===lessons.length-1?'View Results →':'Next Lesson →';
  if(!document.getElementById('labContent').hidden)window.scrollTo({top:0,behavior:'instant'});
 }
 previous.addEventListener('click',function(){if(current>0)show(current-1)});
-next.addEventListener('click',function(){if(current<lessons.length-1)show(current+1)});
+next.addEventListener('click',function(){if(current<lessons.length)show(current+1)});
+lessons.forEach(function(lesson,i){
+ const footer=document.createElement('div');footer.className='panel';
+ const clear=document.createElement('button');clear.type='button';clear.className='begin-button';clear.textContent='Clear This Lesson';
+ clear.style.cssText='background:white;color:#922b43;border:2px solid #b97a87;margin:12px 0';
+ clear.onclick=function(){
+  if(!confirm('Clear only Lesson '+(i+1)+'? Your other lessons will stay saved.'))return;
+  const attemptKey='csp05-question-attempts';
+  let attempts={};try{attempts=JSON.parse(localStorage.getItem(attemptKey)||'{}')}catch(e){}
+  let answers={};try{answers=JSON.parse(localStorage.getItem('csp05-answers')||'{}')}catch(e){}
+  for(let n=lesson.start+1;n<=lesson.end;n++){
+   localStorage.removeItem('csp05lab'+n);
+   for(const id of (n===9?['9a','9b']: [String(n)])){delete attempts[id];localStorage.removeItem('csp05-locked-'+id)}
+   for(const id of ['c'+n,'a'+n,'c9b']){if(id==='c9b'&&n!==9)continue;delete answers[id]}
+   const section=sections[n-1];section.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='radio'||el.type==='checkbox')el.checked=false;else if(el.tagName==='TEXTAREA')el.value=el.defaultValue;else el.value='';el.disabled=false});
+  }
+  localStorage.setItem(attemptKey,JSON.stringify(attempts));
+  localStorage.setItem('csp05-answers',JSON.stringify(answers));
+  localStorage.removeItem('csp05-grade-submitted');
+  localStorage.setItem(key,String(i));
+  location.reload();
+ };
+ footer.appendChild(clear);sections[lesson.end-1].insertAdjacentElement('afterend',footer);
+ // Keep the clear control visible only with its lesson.
+ const oldShow=show;
+ lesson.clearFooter=footer;
+});
+const originalShow=show;
+show=function(i){originalShow(i);lessons.forEach((l,j)=>{l.clearFooter.hidden=i!==j})};
 show(current);
 })();
 </script><script>
