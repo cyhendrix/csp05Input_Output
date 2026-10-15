@@ -99,6 +99,7 @@ next.type='button';next.textContent='Next Lesson →';
 nav.append(previous,next);
 sections[sections.length-1].insertAdjacentElement('afterend',nav);
 const resultPanel=document.getElementById('chapter5Results');
+resultPanel.hidden=true;
 const resultTab=document.createElement('button');resultTab.type='button';resultTab.className='lesson-tab';resultTab.textContent='Results';tabs.appendChild(resultTab);
 const key='csp05-current-lesson';
 let current=0;
@@ -123,7 +124,8 @@ function show(i){
  button.setAttribute('aria-current',n===i?'page':'false');
  });
  previous.disabled=i===0;next.disabled=i===lessons.length;
- next.textContent=i===lessons.length-1?'View Results →':'Next Lesson →';
+ next.textContent='Next Lesson →';
+ nav.hidden=i===lessons.length;
  if(!document.getElementById('labContent').hidden)window.scrollTo({top:0,behavior:'instant'});
 }
 previous.addEventListener('click',function(){if(current>0)show(current-1)});
@@ -149,7 +151,9 @@ lessons.forEach(function(lesson,i){
   localStorage.setItem(key,String(i));
   location.reload();
  };
- footer.appendChild(clear);sections[lesson.end-1].insertAdjacentElement('afterend',footer);
+ footer.appendChild(clear);
+ if(i===lessons.length-1){const finish=document.createElement('button');finish.type='button';finish.className='begin-button';finish.textContent='Next Lesson →';finish.style.marginLeft='12px';finish.onclick=function(){show(lessons.length)};footer.appendChild(finish)}
+ sections[lesson.end-1].insertAdjacentElement('afterend',footer);
  // Keep the clear control visible only with its lesson.
  const oldShow=show;
  lesson.clearFooter=footer;
