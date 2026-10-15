@@ -136,7 +136,7 @@ const count=attempts[id]||0;
 if(locks[id]||count>=maxTries)return false;
 attempts[id]=count+1;
 const finished=correct||attempts[id]>=maxTries;
-if(finished)locks[id]=true;
+if(finished){locks[id]=true;localStorage.setItem('csp05-locked-'+id,correct?'correct':'incorrect');}
 localStorage.setItem(key,JSON.stringify(attempts));
 const parts=fieldIds(id);
 const question=parts.question;
@@ -164,11 +164,11 @@ const selected=document.querySelector('input[name="'+name+'"]:checked');
 apply('9'+part,!!selected&&selected.value===expected);
 };
 const previousReset=resetCode;
-resetCode=function(n){previousReset(n);/* Reset Code changes the editor, not a locked answer. */};
+resetCode=function(n){previousReset(n);const id=String(n);if(locks[id]){const q=fieldIds(id).question;if(q)q.querySelectorAll('input,button.check').forEach(el=>el.disabled=true);const f=document.getElementById('f'+id);if(f){const correct=localStorage.getItem('csp05-locked-'+id)==='correct';f.textContent=correct?'✓ Correct! Answer locked.':'✗ Both attempts used. Answer locked.';f.className='feedback '+(correct?'correct':'wrong')}}};
 const previousReset9b=reset9b;
 reset9b=function(){previousReset9b()};
 Object.keys(attempts).forEach(id=>{
-if(attempts[id]>=maxTries){
+if(attempts[id]>=maxTries||localStorage.getItem('csp05-locked-'+id)){
 locks[id]=true;
 const {question}=fieldIds(id);
 if(question)question.querySelectorAll('input,button.check').forEach(el=>el.disabled=true);
