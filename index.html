@@ -98,7 +98,7 @@ try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&sa
 const buttons=lessons.map(function(lesson,i){
  const button=document.createElement('button');
  button.type='button';button.className='lesson-tab';
- button.innerHTML='<strong>Lesson '+String(i+1).padStart(2,'0')+'</strong><span class="lesson-tab-subtitle">'+lesson.name.split(': ').slice(1).join(': ')+'</span>';
+ button.innerHTML='<strong>Lesson '+String(i+1).padStart(2,'0')+'</strong><span class="lesson-tab-subtitle">'+['Printing with Parameters','Getting Input from a User','String Formatting'][i]+'</span>';
  button.addEventListener('click',function(){show(i)});
  tabs.appendChild(button);return button;
 });
