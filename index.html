@@ -220,6 +220,7 @@ lessons.forEach(function(lesson,i){
 [4,5].forEach(n=>{const q=document.getElementById('c'+n).closest('section.lab').querySelector('.question');if(q)q.hidden=localStorage.getItem('csp05-code-verified-'+n)!=='1'});
 const originalShow=show;
 show=function(i){originalShow(i);lessons.forEach((l,j)=>{l.clearFooter.hidden=i!==j})};
+if(!mayOpen(current)){current=lessons.findIndex((_,i)=>!lessonComplete(i));if(current<0)current=lessons.length;localStorage.setItem(key,String(current));}
 show(current);
 })();
 </script><script>
