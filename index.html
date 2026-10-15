@@ -89,7 +89,7 @@ const intro=document.querySelector('#labContent > section.intro');
 const tabs=document.createElement('nav');
 tabs.className='lesson-tabs';
 tabs.setAttribute('aria-label','Chapter 5 lesson tabs');
-intro.insertAdjacentElement('afterend',tabs);
+intro.insertAdjacentElement('beforebegin',tabs);
 const nav=document.createElement('div');
 nav.className='practice-navigation';
 const previous=document.createElement('button');
