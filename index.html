@@ -98,7 +98,7 @@ try{const saved=Number(localStorage.getItem(key));if(Number.isInteger(saved)&&sa
 const buttons=lessons.map(function(lesson,i){
  const button=document.createElement('button');
  button.type='button';button.className='lesson-tab';
- button.textContent=lesson.name;
+ button.textContent='Lesson '+(i+1);
  button.addEventListener('click',function(){show(i)});
  tabs.appendChild(button);return button;
 });
@@ -116,5 +116,63 @@ function show(i){
 previous.addEventListener('click',function(){if(current>0)show(current-1)});
 next.addEventListener('click',function(){if(current<lessons.length-1)show(current+1)});
 show(current);
+})();
+</script><script>
+(function(){
+const maxTries=2;
+const attempts={};
+const locks={};
+const key='csp05-question-attempts';
+try{Object.assign(attempts,JSON.parse(localStorage.getItem(key)||'{}'))}catch(e){}
+function fieldIds(id){
+const n=String(id).replace('9a','9').replace('9b','9');
+const section=document.getElementById('c'+n)?.closest('section.lab');
+const name=id==='9a'?'q9a':id==='9b'?'q9b':'q'+n;
+const question=section&&Array.from(section.querySelectorAll('.question')).find(q=>q.querySelector('input[name="'+name+'"]')||q.querySelector('#a'+n));
+return {question,section};
+}
+function apply(id,correct){
+const count=attempts[id]||0;
+if(locks[id]||count>=maxTries)return false;
+attempts[id]=count+1;
+const finished=correct||attempts[id]>=maxTries;
+if(finished)locks[id]=true;
+localStorage.setItem(key,JSON.stringify(attempts));
+const parts=fieldIds(id);
+const question=parts.question;
+if(question){
+const inputs=question.querySelectorAll('input');
+inputs.forEach(el=>{el.disabled=finished});
+const check=question.querySelector('button.check');
+if(check)check.disabled=finished;
+}
+const f=document.getElementById('f'+id);
+if(f){
+f.textContent=correct?'✓ Correct! Answer locked.':finished?'✗ Incorrect. Both attempts used. Answer locked; continue to the next activity.':'✗ Incorrect. You have one more try.';
+f.className='feedback '+(correct?'correct':'wrong');
+}
+if(finished&&id!=='9a'&&id!=='9b')completeLab(Number(id));
+if(finished&&(id==='9a'||id==='9b')){
+part9[id.slice(-1)]=true;
+if(part9.a&&part9.b)completeLab(9);
+}
+return true;
+}
+showFeedback=function(n,ok){apply(String(n),ok)};
+checkPart9=function(part,name,expected){
+const selected=document.querySelector('input[name="'+name+'"]:checked');
+apply('9'+part,!!selected&&selected.value===expected);
+};
+const previousReset=resetCode;
+resetCode=function(n){previousReset(n);/* Reset Code changes the editor, not a locked answer. */};
+const previousReset9b=reset9b;
+reset9b=function(){previousReset9b()};
+Object.keys(attempts).forEach(id=>{
+if(attempts[id]>=maxTries){
+locks[id]=true;
+const {question}=fieldIds(id);
+if(question)question.querySelectorAll('input,button.check').forEach(el=>el.disabled=true);
+}
+});
 })();
 </script></body></html>
