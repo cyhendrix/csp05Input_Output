@@ -206,8 +206,8 @@ function refreshResults(){
  summary.textContent='Score: '+state.score+' / 100 ('+state.correct+' correct question answers; 2 coding activities completed).';
  const sent=localStorage.getItem('csp05-grade-submitted')==='1';
  submit.hidden=sent;
- submit.disabled=!state.all;
- if(!sent)note.textContent=state.all?'All activities finished. Submit your score below.':'Finish all questions and coding activities to enable Submit Grades.';
+ submit.disabled=false;
+ if(!sent)note.textContent=state.all?'All activities finished. Submit your score below.':'Complete all questions (two attempts maximum) and both coding challenges before submitting. '+state.done+' of 10 practices are marked complete.';
  reset.hidden=!sent;
  if(sent)note.textContent='Grade submission was sent. Please verify it appears in your grade tracker before resetting.';
 }
@@ -216,7 +216,7 @@ const observer=new MutationObserver(refreshResults);
 observer.observe(document.getElementById('progressText'),{childList:true,characterData:true,subtree:true});
 submit.addEventListener('click',function(){
  const state=graded();
- if(!state.all)return;
+ if(!state.all){note.textContent='Not ready to submit: '+state.done+' of 10 practices completed. Answer every question (correct or after two tries) and run both coding challenges successfully.';note.scrollIntoView({behavior:'smooth',block:'center'});return;}
  let student;
  try{student=JSON.parse(localStorage.getItem('csp05-student-info')||'null')}catch(e){}
  if(!student||!student.first||!student.last||!student.period){note.textContent='Student information is missing. Please return to the first page.';return;}
