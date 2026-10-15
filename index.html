@@ -30,7 +30,7 @@ print("|       /\\           |")
 print("|      /  \\          |")
 signature = str.format("|{0:^20.10}|", artist)
 print(signature)
-print("+--------------------+")</textarea><div class="challenge"><b>Your Turn:</b> Replace the picture with your own 3–5 line character art. Keep the centered signature and 10-character maximum.</div><div class="controls"><button class="run" onclick="runCode(10)">▶ Run Code</button></div><div id="f10" class="feedback"></div><div id="o10" class="console">Output will appear here.</div></section><section id="chapter5Results" class="intro" hidden style="background:white;border:0;border-radius:16px;padding:24px;box-shadow:0 3px 12px #0001"><h2 style="color:#48216e">Results</h2><div style="display:flex;gap:8px;margin:16px 0"><div style="background:#efe3fa;border-radius:10px;padding:14px;min-width:130px"><strong id="chapter5ChecksCount">0 / 11</strong><div>Checks completed</div></div><div style="background:#efe3fa;border-radius:10px;padding:14px"><strong id="chapter5ScorePercent">0%</strong><div>Score</div></div></div><p id="chapter5ResultSummary" hidden></p><p id="chapter5SubmissionNote">Finish every question (correct or two checks used) to submit your grade.</p><button id="chapter5SubmitGrade" class="begin-button" type="button" disabled style="margin:12px 8px 0 0">Submit Grade</button><button id="chapter5ResetAll" class="begin-button" type="button" style="background:white;color:#922b43;border:1px solid #b97a87;margin-top:12px">Clear Saved Information</button></section></main><footer>Chapter 05 • Input and Output • Interactive Practice Lab</footer><script>let pyodide=null;const originals={};for(let i=1;i<=10;i++)originals[i]=document.getElementById('c'+i).value;const original9b=document.getElementById('c9b').value;let part9={a:false,b:false};async function startPython(){try{pyodide=await loadPyodide();document.getElementById('pythonStatus').textContent='✓ Python is ready'}catch(e){document.getElementById('pythonStatus').textContent='Python could not load — refresh'}}startPython();async function execute(code,out){out.classList.remove('error');out.textContent='Running...';if(!pyodide){out.textContent='Python is still loading.';return false}let buffer=[];pyodide.setStdout({batched:s=>buffer.push(s)});pyodide.setStderr({batched:s=>buffer.push(s)});pyodide.globals.set('js_prompt',m=>window.prompt(m)||'');await pyodide.runPythonAsync('import builtins\nbuiltins.input=lambda prompt="": js_prompt(prompt)');try{await pyodide.runPythonAsync(code);out.textContent=buffer.join('\n')||'(Program finished with no printed output.)';return true}catch(e){out.classList.add('error');out.textContent=e.toString();return false}}const codePassed={};
+print("+--------------------+")</textarea><div class="challenge"><b>Your Turn:</b> Replace the picture with your own 3–5 line character art. Keep the centered signature and 10-character maximum.</div><div class="controls"><button class="run" onclick="runCode(10)">▶ Run Code</button></div><div id="f10" class="feedback"></div><div id="o10" class="console">Output will appear here.</div></section><section id="chapter5Results" class="intro" hidden style="background:white;border:0;border-radius:16px;padding:24px;box-shadow:0 3px 12px #0001"><h2 style="color:#48216e">Results</h2><div style="display:flex;gap:8px;margin:16px 0"><div style="background:#efe3fa;border-radius:10px;padding:14px;min-width:130px"><strong id="chapter5ChecksCount">0 / 11</strong><div>Checks completed</div></div><div style="background:#efe3fa;border-radius:10px;padding:14px"><strong id="chapter5ScorePercent">0%</strong><div>Score</div></div></div><p id="chapter5ResultSummary" hidden></p><p id="chapter5SubmissionNote">Answer every question correctly to submit your grade.</p><button id="chapter5SubmitGrade" class="begin-button" type="button" disabled style="margin:12px 8px 0 0">Submit Grade</button><button id="chapter5ResetAll" class="begin-button" type="button" style="background:white;color:#922b43;border:1px solid #b97a87;margin-top:12px">Clear Saved Information</button></section></main><footer>Chapter 05 • Input and Output • Interactive Practice Lab</footer><script>let pyodide=null;const originals={};for(let i=1;i<=10;i++)originals[i]=document.getElementById('c'+i).value;const original9b=document.getElementById('c9b').value;let part9={a:false,b:false};async function startPython(){try{pyodide=await loadPyodide();document.getElementById('pythonStatus').textContent='✓ Python is ready'}catch(e){document.getElementById('pythonStatus').textContent='Python could not load — refresh'}}startPython();async function execute(code,out){out.classList.remove('error');out.textContent='Running...';if(!pyodide){out.textContent='Python is still loading.';return false}let buffer=[];pyodide.setStdout({batched:s=>buffer.push(s)});pyodide.setStderr({batched:s=>buffer.push(s)});pyodide.globals.set('js_prompt',m=>window.prompt(m)||'');await pyodide.runPythonAsync('import builtins\nbuiltins.input=lambda prompt="": js_prompt(prompt)');try{await pyodide.runPythonAsync(code);out.textContent=buffer.join('\n')||'(Program finished with no printed output.)';return true}catch(e){out.classList.add('error');out.textContent=e.toString();return false}}const codePassed={};
 function validateCoding(n,code){
  const original=originals[n];
  if(code.trim()===original.trim())return 'Make the changes described in Your Turn before checking your code.';
@@ -112,7 +112,7 @@ const wait=setInterval(function(){
 checks++;
 const value=box.textContent.trim();
 if(box.classList.contains('error')||/still loading/i.test(value)||checks>200){clearInterval(wait);return;}
-if(value&&!/Running|appear here/i.test(value)){q.hidden=false;clearInterval(wait);}
+if(value&&!/Running|appear here/i.test(value)){const id=run.getAttribute('onclick')?.match(/\d+/)?.[0];if(id&&localStorage.getItem('csp05-code-verified-'+id)==='1')q.hidden=false;clearInterval(wait);}
 },150);
 });
 const reset=controls.querySelector('.reset');
@@ -134,7 +134,7 @@ const lessonIntroductions=[
  ['Lesson 2: Getting Input from a User','Practice collecting user input with input() and converting text into numbers with int() and float().'],
  ['Lesson 3: String Formatting','Practice inserting values into formatted strings, working with numbered placeholders, and aligning text.']
 ];
-const instructionText='Instructions: Run the Python code and complete each activity. Questions allow a maximum of 2 checks. Correct answers lock immediately; after a second incorrect check, the answer locks and you can continue.';
+const instructionText='Instructions: Complete each coding challenge correctly, then answer its follow-up question correctly. You can retry until correct. The next lesson stays locked until all activities are complete.';
 intro.style.borderLeft='0';
 const tabs=document.createElement('nav');
 tabs.className='lesson-tabs';
@@ -169,7 +169,7 @@ const buttons=lessons.map(function(lesson,i){
 tabs.appendChild(resultTab);
 resultTab.addEventListener('click',function(){show(lessons.length)});
 function show(i){
- if(!mayOpen(i)){alert('Complete every coding activity and question correctly in the current lesson before moving forward.');return;}
+ if(!mayOpen(i)){alert('Finish every coding challenge and its follow-up question correctly before moving to the next lesson. You can retry as often as needed.');return;}
  current=i;localStorage.setItem(key,String(i));
  const lesson=lessons[i];
  sections.forEach(function(section,n){section.hidden=!lesson||n<lesson.start||n>=lesson.end});
@@ -225,7 +225,7 @@ show(current);
 })();
 </script><script>
 (function(){
-const maxTries=2;
+const maxTries=Infinity;
 const attempts={};
 const locks={};
 const key='csp05-question-attempts';
@@ -303,7 +303,7 @@ function graded(){
 }
 function refreshResults(){
  const state=graded();
- summary.textContent='Score: '+state.score+' / 100 ('+state.correct+' correct question answers; 2 coding activities completed).';
+ summary.textContent='Score: '+state.score+' / 100 ('+state.correct+' correct question answers; coding challenges verified).';
  document.getElementById('chapter5ChecksCount').textContent=(['1','2','3','5','6','7','8','9a','9b'].filter(id=>localStorage.getItem('csp05-locked-'+id)).length+Number(localStorage.getItem('csp05lab4')==='1')+Number(localStorage.getItem('csp05lab10')==='1'))+' / 11';
  document.getElementById('chapter5ScorePercent').textContent=state.score+'%';
  const sent=localStorage.getItem('csp05-grade-submitted')==='1';
